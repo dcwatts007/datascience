@@ -1,0 +1,117 @@
+---
+title: "Client Report - Exploring Names"
+subtitle: "Unit 1 Task 1"
+author: "Daniel Watts"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false
+    
+---
+
+```{python}
+import pandas as pd
+import numpy as np
+from lets_plot import *
+
+LetsPlot.setup_html(isolated_frame=True)
+```
+
+```{python}
+# Learn morea about Code Cells: https://quarto.org/docs/reference/cells/cells-jupyter.html
+
+# Include and execute your code here
+df = pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+
+## QUESTION 1
+
+__What was the earliest year that the name ‘Felisha’ was used?__
+
+Felisha was first used in 1964.
+
+```{python}
+# Q1
+df.head
+df.query("name == ['Felisha']").sort_values('year', ascending = True)
+
+```
+
+
+## QUESTION 2
+
+__What year had the most babies named 'David'? How many babies were named 'David' that year?__
+
+In 1965 there were 64,755 babies named David. 
+
+```{python}
+# Q2
+data=df.query("name == ['David']")
+ggplot(data=data, mapping=aes(x='year',y='Total')) + geom_bar(stat='identity')
+
+```
+
+
+## QUESTION 3
+
+__What year did your name hit its peak? How many babies were named your name in that year?__
+
+In 1990 there were 26,554 babies with the name Daniel
+
+```{python}
+# Q3
+data=df.query("name == ['Daniel']")
+ggplot(data=data, mapping=aes(x='year',y='Total')) + geom_bar(stat='identity')
+
+
+```
+
+
+
+## QUESTION 4
+
+__How many babies are named ‘Oliver’ in the state of Utah for all years?__  
+
+There were 1704 people named Oliver in Utah. 
+
+```{python}
+# Q4
+nameset = df.query("name == 'Oliver'")
+nameset['UT'].sum()
+
+```
+
+---
+
+## QUESTION 5
+
+__In the most recent year, what was the most common female name in Utah?__ 
+Emma was the most common Female name in 2015. The most common name overall was William. 
+
+
+```{python}
+# Q5
+
+nameset = df.query('year=='+str(df['year'].max()))[['name','year','UT']].sort_values('UT',ascending=False)
+nameset.head()
+
+```
+
+
+---
