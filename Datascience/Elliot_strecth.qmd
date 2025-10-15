@@ -1,0 +1,39 @@
+---
+title: "Client Report - Exploring Names"
+subtitle: "Elliot Stretch Goal"
+author: "Daniel Watts"
+format:
+  html:
+    self-contained: true
+    page-layout: full
+    title-block-banner: true
+    toc: true
+    toc-depth: 3
+    toc-location: body
+    number-sections: false
+    html-math-method: katex
+    code-fold: true
+    code-summary: "Show the code"
+    code-overflow: wrap
+    code-copy: hover
+    code-tools:
+        source: false
+        toggle: true
+        caption: See code
+execute: 
+  warning: false
+    
+---
+```{python}
+import pandas as pd
+import numpy as np
+from lets_plot import *
+
+LetsPlot.setup_html(isolated_frame=True)
+```
+```{python}
+df=pd.read_csv("https://github.com/byuidatascience/data4names/raw/master/data-raw/names_year/names_year.csv")
+```
+```{python}
+ggplot(data=df.query('name'=='Eliot'),mapping=aes(x='year',y='total'))+geom_line()+scale_x_continuous(limits=[1950,2020]format='d')+scale_y_continuous(limits=[0,1200])
+```

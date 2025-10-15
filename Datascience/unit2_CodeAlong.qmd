@@ -1,0 +1,63 @@
+---
+title: "Unit 2 Code Along"
+format: html
+---
+```{python}
+import pandas as pd
+import numpy as np
+import sqlite3
+from lets_plot import *
+LetsPlot.setup_html(isolated_frame=True)
+```
+```{python}
+# Learn morea about Code Cells: https://quarto.org/docs/reference/cells/cells-jupyter.html
+# Include and execute your code here
+sqlite_file = 'lahmansbaseballdb.sqlite'
+# this file must be in the same location as your .qmd or .py file
+con = sqlite3.connect(sqlite_file)
+```
+## QUESTION 1
+__Write an SQL query that provides playerID, yearID, and batting average for players with at least 1 at bat that year. Sort the table from highest batting average to lowest, and then by playerid alphabetically. Show the top 5 results in your report.__
+
+
+```{python}
+q='SELECT * FROM allstarfull LIMIT 5'
+results = pd.read_sql_query(q,con)
+results
+q='SELECT 2 FROM allstarfull LIMIT 5'
+results = pd.read_sql_query(q,con)
+results
+```
+
+```{python}
+q='''
+    SELECT playerID,
+        G as 'Games managed',
+        W as 'WINS',
+        W*1.0/G as 'Win %',
+        yearID,
+        teamID
+    FROM managers
+    WHERE G > 25
+    ORDER BY "Win %" DESC, G DESC
+    '''
+managers = pd.read_sql_query(q,con)
+managers
+
+```
+
+```{python}
+q='''
+    SELECT playerID,
+        H as 'Hits',
+        AB as 'At Bats',
+        round((H*1.0/AB),3) as 'Batting Average'
+    FROM batting
+    WHERE AB>1
+    ORDER BY "Batting Average" DESC
+    LIMIT 5
+    '''
+managers = pd.read_sql_query(q,con)
+managers
+
+```
